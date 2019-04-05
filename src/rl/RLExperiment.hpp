@@ -13,6 +13,7 @@
 #include "Hash.hpp"
 
 #include <stdlib.h>
+#include <ctime>
 
 struct RLExperimentConfig
 {
@@ -134,6 +135,8 @@ class RLExperiment
     size_t                      m_stepsUntilRLUpdate = 1;
 
     size_t                      m_simulationSteps = 0;
+    size_t                      m_runSimSteps = 0;
+    size_t                      m_stuck = 0;
     double                      m_simulationTime = 0;
     Timer                       m_simTimer;
     double                      m_previousEval = 0;
@@ -323,19 +326,20 @@ public:
 
         std::cout << "Results dir: " << m_config.resultsDir;
 
-        srand(time(0));
+        
+        std::time_t num = std::time(nullptr);
 
-        // prints out the number of formations completed
-        //std::stringstream ss;
-        //ss << m_config.resultsDir << "results_form_" << m_config.numRobots << "_" << m_config.maxTimeSteps << ".txt";
-        //std::cout << "Printing Results to: " << ss.str() << "\n";
+        // prints out the number of stuck cases
+        std::stringstream ss;
+        ss << m_config.resultsDir << "results_form_" << m_config.numRobots << "_" << m_config.maxTimeSteps << "_" << num << ".txt";
+        std::cout << "Printing Results to: " << ss.str() << "\n";
 
-        //std::ofstream fout(ss.str());
-        //fout << m_formations;
+        std::ofstream fout(ss.str());
+        fout << m_stuck;
 
         // prints out the number of  completed
         std::stringstream ss2;
-        ss2 << m_config.resultsDir << "results_form_over_time_" << m_config.numRobots << "_" << m_config.maxTimeSteps << "_" << rand()%1000 << ".txt";
+        ss2 << m_config.resultsDir << "results_form_over_time_" << m_config.numRobots << "_" << m_config.maxTimeSteps << "_" << num << ".txt";
         std::cout << "Printing Results to: " << ss2.str() << "\n";
 
 
@@ -376,14 +380,24 @@ public:
                 m_status << "QO Coverage: " << m_QL.getCoverage() << " of " << m_QL.size() << "\n";
                 m_status << "Puck Eval:  " << eval << "\n";
                 m_status << "Formations: " << m_formations << "\n";
+                m_status << "Times Stuck: " << m_stuck << "\n";
                 m_gui->setStatus(m_status.str());
 
                 // draw gui
                 m_gui->update();
             }
 
+           size_t currentSimSteps = m_simulationSteps - m_runSimSteps;
+           if (currentSimSteps >= 500000)
+           {
+               m_stuck += 1;
+               m_runSimSteps = m_simulationSteps;
+               resetSimulator();
+           }
+
             if (m_config.resetEval && (eval > m_config.resetEval))
             {
+                m_runSimSteps = m_simulationSteps;
                 m_formations += 1;
                 m_formationCompleteTimes.push_back(m_simulationSteps);
                 resetSimulator();

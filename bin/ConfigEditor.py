@@ -65,6 +65,6 @@ class ConfigEditor:
         self.file.write(self.getSpacing('savePolicy', '100000 gnuplot/q_out.txt'))
         self.file.write(self.getSpacing('loadPolicy', '0 gnuplot/q_out.txt'))
         self.file.write(self.getSpacing('resultsDir', 'results/exp1/'))
+        self.file.write(self.getSpacing('RLAction', '1'))
         self.file.write(self.getSpacing('importGrid', '0 images/potential_field_L.png'))
-        self.file.write(self.getSpacing('RLAction', '0'))
         self.file.close()
