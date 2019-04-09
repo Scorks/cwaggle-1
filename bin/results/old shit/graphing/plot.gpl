@@ -1,0 +1,12 @@
+set terminal pdf
+set title "Learning and Applying RL Policies Versus OC" font "arial, 14" 
+show title
+set xtics ("0" 0, "1x10^6" 1000000, "2x10^6" 2000000, "3x10^6" 3000000, "4x10^6" 4000000,"5x10^6" 5000000)
+set output "policy_learning"
+set xlabel "Simulation Steps" font "arial, 13" 
+set ylabel "Formations" font "arial, 13" 
+set key left Left reverse samplen 3 spacing 1.2 font ",13"
+plot "worse_RL.txt" with steps title "Learning Reinforcement Learning Policy", \
+     "better_RL.txt" with steps title "Applying Reinforcement Learning Policy",  \
+     "OC.txt" with steps title "Orbital Construction Algorithm", \
+

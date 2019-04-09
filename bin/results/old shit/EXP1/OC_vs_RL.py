@@ -159,4 +159,4 @@ exp10.editValue('epsilon', '0.00')
 exp10.editValue('savePolicy', '100000 gnuplot/q_out10.txt')
 
 
-# os.system("./cwaggle_rl rl_config1.txt & ./cwaggle_rl rl_config3.txt & ./cwaggle_rl rl_config5.txt & ./cwaggle_rl rl_config7.txt & ./cwaggle_rl rl_config9.txt & ./cwaggle_rl rl_config2.txt & ./cwaggle_rl rl_config4.txt & ./cwaggle_rl rl_config6.txt & ./cwaggle_rl rl_config8.txt & ./cwaggle_rl rl_config10.txt")
+os.system("./cwaggle_rl rl_config1.txt & ./cwaggle_rl rl_config3.txt & ./cwaggle_rl rl_config5.txt & ./cwaggle_rl rl_config7.txt & ./cwaggle_rl rl_config9.txt & ./cwaggle_rl rl_config2.txt & ./cwaggle_rl rl_config4.txt & ./cwaggle_rl rl_config6.txt & ./cwaggle_rl rl_config8.txt & ./cwaggle_rl rl_config10.txt")

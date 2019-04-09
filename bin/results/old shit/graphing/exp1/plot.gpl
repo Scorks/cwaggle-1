@@ -1,0 +1,12 @@
+set terminal png
+set title "Learning Policy Versus Orbital Construction Algorithm"
+show title
+set xtics ("0" 0, "1x10^6" 1000000, "2x10^6" 2000000, "3x10^6" 3000000, "4x10^6" 4000000,"5x10^6" 5000000)
+set output "policy_learning"
+set xlabel "Simulation Steps"
+set ylabel "Formations"
+set key left top
+set key samplen 2 spacing .9 font ",8"
+plot "results_form_over_time_8_5000000_1554484592.txt" with steps title "Learning Reinforcement Learning Policy", \
+     "results_form_over_time_8_5000000_1554484913.txt" with steps title "Orbital Construction Algorithm", \
+
