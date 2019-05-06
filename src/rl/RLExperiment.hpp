@@ -331,7 +331,7 @@ public:
 
         // prints out the number of stuck cases
         std::stringstream ss;
-        ss << m_config.resultsDir << "results_form_" << m_config.numRobots << "_" << m_config.maxTimeSteps << "_" << num << ".txt";
+        ss << m_config.resultsDir << "STUCK" << m_config.numRobots << "_" << m_config.doRLAction << "_" << num << ".txt";
         std::cout << "Printing Results to: " << ss.str() << "\n";
 
         std::ofstream fout(ss.str());
@@ -339,16 +339,35 @@ public:
 
         // prints out the number of  completed
         std::stringstream ss2;
-        ss2 << m_config.resultsDir << "results_form_over_time_" << m_config.numRobots << "_" << m_config.maxTimeSteps << "_" << num << ".txt";
+        ss2 << m_config.resultsDir << "RESULTS_" << m_config.numRobots << "_" << m_config.doRLAction << "_" << num << ".txt";
         std::cout << "Printing Results to: " << ss2.str() << "\n";
 
-
         std::ofstream fout2(ss2.str());
-        fout2 << "0 0\n";
+
+        size_t numFormations = m_formationCompleteTimes.size();
+        size_t count = 0;
+        for (size_t i = 0; i < m_simulationSteps; i+=1000)
+        {
+            if (std::find(m_formationCompleteTimes.begin(), m_formationCompleteTimes.end(), i) != m_formationCompleteTimes.end())
+            {
+                count += 1;
+            }
+            fout2 << (i) << " " << count << "\n";
+        }
+
+        /**
+        //fout2 << "0 0\n";
+        size_t index = 0;
         for (size_t i = 0; i < m_formationCompleteTimes.size(); i++)
         {
-            fout2 << m_formationCompleteTimes[i] << " " << (i+1) << "\n";  
+            size_t numToOutput = m_formationCompleteTimes[i]/1000;
+            for (size_t j = 0; j < numToOutput; j++) {
+                fout2 << (index*1000) << " " << (i) << "\n";
+                index = index+1;
+            }
+            //fout2 << m_formationCompleteTimes[i] << " " << (i+1) << "\n";  
         }
+        **/
 
     }
 
@@ -370,9 +389,10 @@ public:
                 doSimulationStep();
             }
             m_simulationTime += m_simTimer.getElapsedTimeInMilliSec();
-
+        
             if (m_gui)
             {
+                /**
                 // update gui status text
                 m_status = std::stringstream();
                 m_status << "Sim Steps:  " << m_simulationSteps << "\n";
@@ -382,17 +402,22 @@ public:
                 m_status << "Formations: " << m_formations << "\n";
                 m_status << "Times Stuck: " << m_stuck << "\n";
                 m_gui->setStatus(m_status.str());
-
+                **/
                 // draw gui
                 m_gui->update();
             }
 
            size_t currentSimSteps = m_simulationSteps - m_runSimSteps;
-           if (currentSimSteps >= 500000)
+           if (currentSimSteps >= 50000)
            {
                m_stuck += 1;
                m_runSimSteps = m_simulationSteps;
                resetSimulator();
+           }
+
+           if (m_simulationSteps%1000 == 0) // per every 1000 steps
+           {
+
            }
 
             if (m_config.resetEval && (eval > m_config.resetEval))

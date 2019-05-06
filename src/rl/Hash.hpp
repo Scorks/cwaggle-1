@@ -71,6 +71,48 @@ namespace Hash
         return hash;
     }
 
+    size_t Original_7bit(const SensorReading & reading)
+    {
+        const static std::string & name = "Original_77bit";
+        const static size_t maxHashSize = GetHashData(name).MaxHashSize;
+
+        const size_t MaxHashSize = (1 << 7);
+        size_t hash = 0;
+
+        hash += (reading.leftPucks == 0) ? 0 : (1 << 0);
+        hash += (reading.rightPucks == 0) ? 0 : (1 << 1);
+        hash += (reading.leftNest < reading.midNest) ? 0 : (1 << 2);
+        hash += (reading.rightNest < reading.midNest) ? 0 : (1 << 3);
+
+        size_t midNestReading = (size_t)(floor(reading.midNest * 8));
+        if (midNestReading == 8) midNestReading = 7;
+        hash += midNestReading * (1 << 4);
+
+        if (hash >= maxHashSize) { std::cerr << "WARNING: " << name << " hash size too large: " << hash; }
+        return hash;
+    }
+
+    size_t Original_9bit(const SensorReading & reading)
+    {
+        const static std::string & name = "Original_9bit";
+        const static size_t maxHashSize = GetHashData(name).MaxHashSize;
+
+        const size_t MaxHashSize = (1 << 9);
+        size_t hash = 0;
+
+        hash += (reading.leftPucks == 0) ? 0 : (1 << 0);
+        hash += (reading.rightPucks == 0) ? 0 : (1 << 1);
+        hash += (reading.leftNest < reading.midNest) ? 0 : (1 << 2);
+        hash += (reading.rightNest < reading.midNest) ? 0 : (1 << 3);
+
+        size_t midNestReading = (size_t)(floor(reading.midNest * 32));
+        if (midNestReading == 32) midNestReading = 31;
+        hash += midNestReading * (1 << 4);
+
+        if (hash >= maxHashSize) { std::cerr << "WARNING: " << name << " hash size too large: " << hash; }
+        return hash;
+    }
+
     const HashFunctionData & GetHashData(const std::string & hashFunctionName)
     {
         static std::map<std::string, HashFunctionData> hashData;
@@ -80,6 +122,8 @@ namespace Hash
         if (hashData.empty())
         {
             hashData["Original"]    = { OriginalHash,   (1 << 8) };
+            hashData["Original_7bit"]={ Original_7bit,  (1 << 7) };
+            hashData["Original_9bit"]={ Original_9bit,  (1 << 9) };
             hashData["PuckMid4"]    = { PuckMid4,       (1 << 4) };
             hashData["PuckMid16"]   = { PuckMid16,      (1 << 6) };
         }

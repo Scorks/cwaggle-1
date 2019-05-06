@@ -24,7 +24,7 @@ class GUI
     Entity              m_selectedLine;
     bool                m_selectedLineStart = false;
     bool                m_debug = false;
-    bool                m_grid = false;
+    bool                m_grid = !m_grid;
     bool                m_sensors = false;
     std::string         m_status = "";
 
@@ -312,12 +312,14 @@ class GUI
         }
 
         // draw information
+        /**
         std::stringstream ss;
         ss << "Num Objs: " << m_sim->getWorld()->getEntities().size() << "\n";
         ss << "CPU Time: " << m_sim->getComputeTime() << "ms\n";
         ss << "Max Time: " << m_sim->getComputeTimeMax() << "ms\n";
         m_text.setString(ss.str());
         m_window.draw(m_text);
+        **/
 
         // draw evaluation
         sf::Text text;

@@ -91,6 +91,7 @@ namespace ExampleWorlds
         auto world = std::make_shared<World>(width, height);
         if (RL == 1)
         {
+            srand(time(0)); 
             // add the outie robots
             for (size_t r = 0; r < numRobots; r++)
             {
@@ -116,6 +117,7 @@ namespace ExampleWorlds
         }
         else
         {
+            srand(time(0)); 
             // add the outie robots
             for (size_t r = 0; r < numRobots; r++)
             {
@@ -138,6 +140,7 @@ namespace ExampleWorlds
                 sensors.obstacleSensors.push_back(std::make_shared<ObstacleSensor>(robot, -45, robotSize, robotSize/4));
             }
             // add the innie robots
+            /**
             for (size_t r = 0; r < numRobots/2; r++)
             {
                 Entity robot = world->addEntity("robot");
@@ -158,6 +161,8 @@ namespace ExampleWorlds
                 sensors.obstacleSensors.push_back(std::make_shared<ObstacleSensor>(robot, 45, robotSize, robotSize/4));
                 sensors.obstacleSensors.push_back(std::make_shared<ObstacleSensor>(robot, -45, robotSize, robotSize/4));
             }
+            **/
+            
         }
 
         // add the pucks
